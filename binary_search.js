@@ -10,7 +10,7 @@ const sortedeArr = [1, 4, 5, 6, 8, 9, 12, 34, 65, 79];
 
 function binarySearch(array, target) {
   if (array.length < 2 && array[0] !== target) {
-    console.log("1");
+    console.log("The target is not in the array");
     return "target not in array";
   } else if (array.length < 2 && array[0] === target) {
     console.log("2");
@@ -36,3 +36,6 @@ console.log(binarySearch(sortedeArr, 12));
 // console.log(testArr[0]);
 
 // Okay so now I have the first part working, it finds the element in the array. Now I see why they use upper and lower bounds. It allows you to know where the number is in the context of the original array when you find it.
+
+// 111223_2029
+// Okay so I just want to start fresh today and see if I can make this work.
