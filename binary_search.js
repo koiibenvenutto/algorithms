@@ -8,7 +8,8 @@
 
 const sortedeArr = [1, 4, 5, 6, 8, 9, 12, 34, 65, 79];
 
-function binarySearch(array, target) {
+function binarySearch(array, target, globalPosition = 0) {
+  // Base case:
   if (array.length < 2 && array[0] !== target) {
     console.log("The target is not in the array");
     return "target not in array";
@@ -16,18 +17,21 @@ function binarySearch(array, target) {
     console.log("2");
     return array[0];
   }
+
+  // Middle and boundaries:
   const middle = Math.floor(array.length / 2);
 
+  // The recursive part:
   if (target === array[middle]) {
-    return middle;
+    return globalPosition + middle;
   } else if (target < array[middle]) {
-    return binarySearch(array.slice(0, middle), target);
+    return binarySearch(array.slice(0, middle), target, globalPosition);
   } else {
-    return binarySearch(array.slice(middle), target);
+    return binarySearch(array.slice(middle), target, middle);
   }
 }
 
-console.log(binarySearch(sortedeArr, 12));
+console.log(binarySearch(sortedeArr, 4));
 
 // Okay so the next step is: If the lower bound exceeds the upper bound, the target is not in the array. What does this mean, I'm going to break this down.
 
@@ -39,3 +43,4 @@ console.log(binarySearch(sortedeArr, 12));
 
 // 111223_2029
 // Okay so I just want to start fresh today and see if I can make this work.
+// WOW I did it! Hell yeah!
