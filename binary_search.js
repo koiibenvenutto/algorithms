@@ -6,7 +6,7 @@
 
 // So obviously we're taking advantage of the extra information that we get from having a pre sorted array. Let's make one of those to use:
 
-const sortedeArr = [1, 4, 5, 6, 8, 9, 12, 34, 65, 79];
+const babyArr = [1, 4, 5, 6, 8, 9, 12, 34, 65, 79];
 const longArray = [
   8, 19, 33, 38, 41, 42, 50, 56, 67, 78, 87, 91, 94, 106, 111, 123, 136, 149,
   153, 154, 159, 174, 176, 184, 189, 204, 212, 228, 236, 245, 249, 252, 267,
@@ -83,7 +83,7 @@ const longArray = [
   9629, 9637, 9648, 9656, 9660, 9666, 9675, 9680, 9716, 9723, 9728, 9732, 9741,
   9749, 9758, 9762, 9765, 9769, 9786, 9795, 9810, 9823, 9824, 9830, 9844, 9846,
   9853, 9857, 9862, 9871, 9876, 9878, 9880, 9886, 9900, 9904, 9914, 9916, 9923,
-  9950, 9954, 9955, 9964, 9966, 9980, 9989, 9994,
+  9950, 9954, 9955, 9964, 9964, 9964, 9980, 9989, 9994,
 ];
 
 function binarySearch(array, target, globalPosition = 0) {
@@ -97,9 +97,22 @@ function binarySearch(array, target, globalPosition = 0) {
   // Middle:
   let middle = Math.floor(array.length - 1 / 2);
 
+  // Here's an array to store the locations of the target number/s:
+  const locations = [];
+
   // The recursive part:
   if (target === array[middle]) {
-    return middle + globalPosition;
+    // Move down until the first instance of the target is found:
+    let j = middle;
+    while (array[j - 1] === target) {
+      j--;
+    }
+    // Move up and add them all to the locations array:
+    while (array[j] === target) {
+      locations.push(globalPosition + j);
+      j++;
+    }
+    return locations;
   } else if (target < array[middle]) {
     return binarySearch(array.slice(0, middle), target, globalPosition);
   } else {
@@ -107,7 +120,7 @@ function binarySearch(array, target, globalPosition = 0) {
   }
 }
 
-console.log(binarySearch(longArray, 6275));
+console.log(binarySearch(longArray, 9964));
 
 // Okay so the next step is: If the lower bound exceeds the upper bound, the target is not in the array. What does this mean, I'm going to break this down.
 
@@ -120,3 +133,6 @@ console.log(binarySearch(longArray, 6275));
 // 111223_2029
 // Okay so I just want to start fresh today and see if I can make this work.
 // WOW I did it! Hell yeah!
+
+// 111223_2145
+// Also have to make sure that it can handle arrays with duplicate values. What about having the function return an array containing all the instances of the target instead of a single value...Well hang on because we know that it's a sorted array. Therefore, any duplicate targets must be directly adjacent to each other. I'm going to write a helper function instead.
