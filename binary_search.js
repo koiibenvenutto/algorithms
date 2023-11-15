@@ -98,10 +98,9 @@ function binarySearch(array, target, globalPosition = 0) {
   let middle = Math.floor(array.length - 1 / 2);
 
   // Here's an array to store the locations of the target number/s:
-  const locations = [];
-
   // The recursive part:
   if (target === array[middle]) {
+    const locations = [];
     // Move down until the first instance of the target is found:
     let j = middle;
     while (array[j - 1] === target) {
@@ -116,7 +115,11 @@ function binarySearch(array, target, globalPosition = 0) {
   } else if (target < array[middle]) {
     return binarySearch(array.slice(0, middle), target, globalPosition);
   } else {
-    return binarySearch(array.slice(middle + 1), target, middle);
+    return binarySearch(
+      array.slice(middle + 1),
+      target,
+      globalPosition + middle + 1
+    );
   }
 }
 
