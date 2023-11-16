@@ -15,7 +15,7 @@ class minHeap {
     }
     const min = this.heap[0];
     this.heap[0] = this.heap.pop();
-    this.heapifyDown(0);
+    this.heapifyDown();
     return min;
   }
 
@@ -37,12 +37,28 @@ class minHeap {
       this.swap(this.getParentIndex(index), index);
       index = this.getParentIndex(index);
     }
-    // Used after inserting a new element at the end of the heap
-    // Compares newly added element at end of heap with its parent until the heaps order is correct (every parent is less than its children)
   }
 
-  heapifyDown(i) {
+  heapifyDown() {
     // Used after removing the root/min element and replacing it with the last element in the heap
+    let index = 0;
+    while (this.getLeftChildIndex(index) < this.heap.length) {
+      let smallerChildIndex = this.getLeftChildIndex(index);
+      if (
+        this.heap[this.getRightChildIndex(index)] !== undefined &&
+        this.heap[this.getRightChildIndex(index)] <
+          this.heap[this.getLeftChildIndex(index)]
+      ) {
+        smallerChildIndex = this.getRightChildIndex(index);
+      }
+
+      if (this.heap[index] >= this.heap[smallerChildIndex]) {
+        this.swap(index, smallerChildIndex);
+        index = smallerChildIndex;
+      } else {
+        break;
+      }
+    }
   }
 
   getSize() {
