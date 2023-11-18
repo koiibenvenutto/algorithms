@@ -45,7 +45,7 @@ class minHeap {
     while (this.getLeftChildIndex(index) < this.heap.length) {
       let smallerChildIndex = this.getLeftChildIndex(index);
       if (
-        this.heap[this.getRightChildIndex(index)] !== undefined &&
+        this.getRightChildIndex(index) < this.heap.length &&
         this.heap[this.getRightChildIndex(index)] <
           this.heap[this.getLeftChildIndex(index)]
       ) {
@@ -74,7 +74,7 @@ class minHeap {
   }
 
   getParentIndex(i) {
-    Math.floor((i - 1) / 2);
+    return Math.floor((i - 1) / 2);
   }
 
   getLeftChildIndex(i) {
@@ -86,6 +86,23 @@ class minHeap {
   }
 }
 
-const array = [1, 2, 3];
+function heapSort(...arrays) {
+  const heap = new minHeap();
 
-const minHeap1 = new minHeap(array);
+  arrays.forEach((arr) => {
+    arr.forEach((element) => heap.insert(element));
+  });
+  const sortedArr = [];
+
+  const heapLength = heap.getSize();
+  for (let i = 0; i < heapLength; i++) {
+    sortedArr.push(heap.extractMin());
+  }
+
+  return sortedArr;
+}
+
+const unsortedArr1 = [20, 2, 1, 7, 10, 50];
+const unsortedArr2 = [54, 8, 2, 4111, 5, 1, 3, 2, 89, 90];
+
+console.log(heapSort(unsortedArr1, unsortedArr2));
