@@ -1,6 +1,6 @@
 const array = [3, 9, 0, 5, 1, 4, 5, 8, 8, 6];
 
-function quicksort(arr) {
+function quickSort(arr) {
   if (arr.length <= 1) return arr;
 
   let pivot = arr[arr.length - 1];
@@ -15,7 +15,7 @@ function quicksort(arr) {
     }
   }
 
-  return [...quicksort(left), pivot, ...quicksort(right)];
+  return [...quickSort(left), pivot, ...quickSort(right)];
 }
 
-console.log(quicksort(array));
+module.exports = quickSort;

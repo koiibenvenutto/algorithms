@@ -22,7 +22,7 @@ function merge(a, b) {
   return mergedArray;
 }
 
-function split(arr) {
+function mergeSort(arr) {
   // let's start with the base case:
   if (arr.length < 2) {
     return arr;
@@ -32,7 +32,7 @@ function split(arr) {
   const left = arr.slice(0, middle);
   const right = arr.slice(middle);
 
-  return merge(split(left), split(right));
+  return merge(mergeSort(left), mergeSort(right));
 }
 
 module.exports = mergeSort;
