@@ -7,7 +7,7 @@ function binarySearch(array, target, globalPosition = 0) {
   }
 
   // Middle:
-  let middle = Math.floor(array.length - 1 / 2);
+  let middle = Math.floor((array.length - 1) / 2);
 
   // Here's an array to store the locations of the target number/s:
   // The recursive part:
