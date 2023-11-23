@@ -11,17 +11,30 @@ points.sort((a, b) => {
   return points[a] - points[b];
 });
 
-// Step 2: partition the points into two halves based on their x coordinates
+function compare(left, right) {
+  if (left < right) {
+    return left;
+  } else {
+    return right;
+  }
+}
 
-function divide(points) {
-  // Using a middle variable to make sure our partition has equal points on either side, then splicing our points array into left and right arrays.
+function findShortestDistance(array) {
+  // return the shortest distance in the passed array in the form of a number, for example: 2.56
+}
+
+function divideUntilSmallThenShortest(points) {
+  if (points.length <= 3) {
+    return findShortestDistance(points);
+  }
   const middle = Math.floor(points.length / 2);
   const left = points.splice(0, middle);
   const right = points;
-  console.log(left);
-  console.log(right);
+
+  return compare(
+    divideUntilSmallThenShortest(left),
+    divideUntilSmallThenShortest(right)
+  );
 }
 
 divide(points);
-
-// Step 3: find the smallest distance between pairs of distinct points on the left side and the right side of the partition. Then compare those distances to each other to see which is smaller and use that as d
