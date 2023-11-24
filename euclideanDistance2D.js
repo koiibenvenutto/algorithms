@@ -1,22 +1,24 @@
-// Step 1: sort the point by their x axis
-
 const points = [
-  [-20, -8],
+  [-200, -8],
   [100, 0],
   [4, 90],
   [53, 4],
   [20, 24],
   [57, 2],
-  [1, 2],
+  [30, 2],
   [1, 3],
   [76, 7],
 ];
+
+let start = performance.now();
 
 points.sort((a, b) => {
   return a[0] - b[0];
 });
 
-// console.log(points);
+points.sort((a, b) => {
+  return a[0] - b[0];
+});
 
 function compare(left, right) {
   if (left < right) {
@@ -66,48 +68,56 @@ const columns = [];
 
 let d = split(points);
 
-console.log(columns);
-console.log(d);
-
-// Okay so since I can't think of a reason why I would need to make slabs instead of just using the columns that I have used already, I'm going to try my method.
+//
+//
+//
 
 for (col = 0; col < columns.length - 1; col++) {
-  let rightMostOfLeft = columns[col][columns[col].length - 1][0];
+  let rightMostOfLeft = columns[col][columns[col].length - 1];
+  let rightMostOfLeftX = rightMostOfLeft[0];
 
-  let searchBoundaries = [rightMostOfLeft - d, rightMostOfLeft + d];
+  let divide = points.indexOf(rightMostOfLeft) + 1;
 
-  console.log("---");
+  let left = points.slice(0, divide);
+  let right = points.slice(divide);
+
+  let searchBoundaries = [rightMostOfLeftX - d, rightMostOfLeftX + d];
   console.log(searchBoundaries);
-  console.log("---");
-
   const leftCandidates = [];
-  for (let i = 0; i < columns[col].length; i++) {
+  for (let i = 0; i < left.length; i++) {
     if (
-      columns[col][i][0] >= searchBoundaries[0] &&
-      columns[col][i][0] <= searchBoundaries[1]
+      left[i][0] >= searchBoundaries[0] &&
+      left[i][0] <= searchBoundaries[1]
     ) {
-      leftCandidates.push(columns[col][i]);
+      leftCandidates.push(left[i]);
     }
   }
 
   console.log(leftCandidates);
 
   const rightCandidates = [];
-  for (let i = 0; i < columns[col + 1].length; i++) {
+  for (let i = 0; i < right.length; i++) {
     if (
-      columns[col + 1][i][0] >= searchBoundaries[0] &&
-      columns[col + 1][i][0] <= searchBoundaries[1]
+      right[i][0] >= searchBoundaries[0] &&
+      right[i][0] <= searchBoundaries[1]
     ) {
-      rightCandidates.push(columns[col + 1][i]);
+      rightCandidates.push(right[i]);
     }
   }
 
-  // Now that we have put all the points with an x coordinate within d distance of the x coordinate of the rightmost point in the left column into the candidates array, we need to see which of those have points have points with y cordinates less than d distance away in the left column from their y coordinates
+  console.log(rightCandidates);
+
+  //
+  //
+  //
+
+  const leftElects = [];
   for (let i = 0; i < rightCandidates.length; i++) {
     let noClosePoint = true;
     for (let j = 0; j < leftCandidates.length; j++) {
       if (Math.abs(rightCandidates[i][1] - leftCandidates[j][1]) <= d) {
         noClosePoint = false;
+        leftElects.push(leftCandidates[j]);
       }
     }
     if (noClosePoint) {
@@ -115,13 +125,13 @@ for (col = 0; col < columns.length - 1; col++) {
     }
   }
 
-  console.log(rightCandidates);
+  // console.log(rightCandidates);
 
-  for (let i = 0; i < leftCandidates.length; i++) {
+  for (let i = 0; i < leftElects.length; i++) {
     for (let j = 0; j < rightCandidates.length; j++) {
       let result = Math.sqrt(
-        (leftCandidates[i][0] - rightCandidates[j][0]) ** 2 +
-          (leftCandidates[i][1] - rightCandidates[j][1]) ** 2
+        (leftElects[i][0] - rightCandidates[j][0]) ** 2 +
+          (leftElects[i][1] - rightCandidates[j][1]) ** 2
       );
       if (result < d) {
         d = result;
@@ -132,38 +142,5 @@ for (col = 0; col < columns.length - 1; col++) {
   console.log(d);
 }
 
-// Don't need this anymore:
-// let leftMostOfRight = columns[1][0][0];
-
-// console.log(rightMostOfLeft);
-// console.log(leftMostOfRight);
-// console.log(divider);
-
-// Don't need this anymore:
-// let staggeredColumnBounds = [divider - d / 2, divider + d / 2];
-
-// console.log(staggeredColumnBounds);
-
-// Next: we need to grab all points in columns 0 and 1 with x coordinates within d/2 distance from the divider
-
-// let leftAndRightColumns = [...columns[0], ...columns[1]];
-// console.log(leftAndRightColumns);
-
-// let candidates = [];
-// for (let i = 0; i < leftAndRightColumns.length; i++) {
-//   if (
-//     leftAndRightColumns[i][0] > staggeredColumnBounds[0] &&
-//     leftAndRightColumns[i][0] < staggeredColumnBounds[1]
-//   ) {
-//     candidates.push(leftAndRightColumns[i]);
-//   }
-// }
-
-//
-//
-//
-
-// 112323_0112: Okay time for sleepiezzzz
-// This is super interesting idk if I'm on to something or if this actually going to be slower somehow than going grid by grid. I mean there's gonna be a little brute force algorithm but with the columns they each only border 1 or 2 other columns rather than the little squares which require checks with either 8!!!!! other squares because you gotta also check the ones that only touch corners, or if you stagger your checks you only need to check the ones that share a side but that's still a lot of calculations and they still need checks with 4 other boxes! Soooo I think I'm on to something here, curious to see how it works either way :)
-
-// To sleep on, right now at most my method will require 6 comparisons in the case that d/2 includes every x coordinate in the left and right columns, can I optimize this? What about once I have my array of x coordinate candidates, I scan through those to see which of them have points within d distance of them on the y axis accross the divider and I only need to do this from one side
+let end = performance.now();
+console.log(`Execution time: ${end - start} milliseconds`);
