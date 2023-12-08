@@ -3,11 +3,11 @@ const points = [
   [100, 0],
   [4, 90],
   [53, 4],
-  // [20, 24],
-  // [57, 2],
-  // [30, 2],
-  // [1, 3],
-  // [76, 7],
+  [20, 24],
+  [57, 2],
+  [30, 2],
+  [1, 3],
+  [76, 7],
 ];
 
 function dist(a, b) {
@@ -20,6 +20,10 @@ function shortestAcross(points, median, d) {
   points.sort((a, b) => {
     return a[1] - b[1];
   });
+
+  if (points.length < 2) {
+    return Infinity;
+  }
 
   console.log(points);
 
@@ -41,62 +45,61 @@ function shortestAcross(points, median, d) {
 }
 
 function minDist(points) {
-  // Base Case
-  if (points.length < 2) {
-    return Infinity;
-  } else if (points.length <= 3) {
-    return shortest(points);
-  }
-
-  function shortest(array, d = Infinity) {
-    if (array.length < 2) {
+  function shortestRecursive(array) {
+    if (points.length < 2) {
       return Infinity;
-    }
+    } else if (points.length <= 3) {
+      let distance = Infinity;
+      for (let i = 0; i < array.length - 1; i++) {
+        for (let j = 1; j < array.length; j++) {
+          if (i === j && j < array.length - 1) {
+            j++;
+          }
+          let result = dist(array[i], array[j]);
 
-    let distance = Infinity;
-    for (let i = 0; i < array.length - 1; i++) {
-      for (let j = 1; j < array.length; j++) {
-        if (i === j && j < array.length - 1) {
-          j++;
-        }
-        let result = dist(array[i], array[j]);
-
-        if (result < distance) {
-          distance = result;
+          if (result < distance) {
+            distance = result;
+          }
         }
       }
+
+      if (distance < d) {
+        d = distance;
+      }
+      console.log(`Distance: ${distance}`);
+      return distance;
     }
 
-    if (distance < d) {
-      d = distance;
+    points.sort((a, b) => {
+      return a[0] - b[0];
+    });
+
+    console.log(points);
+
+    const middle = Math.floor(points.length / 2);
+    const left = points.slice(0, middle);
+    const right = points.slice(middle);
+
+    console.log(`Left: ${left}`);
+    console.log(`Right: ${right}`);
+
+    const median = points[middle - 1][0];
+    console.log(`Median: ${median}`);
+
+    const lMin = shortestRecursive(left);
+    const rMin = shortestRecursive(right);
+
+    if (Math.min(lMin, rMin) < d) {
+      d = Math.min(lMin, rMin);
     }
-    console.log(`Distance: ${distance}`);
-    return distance;
+
+    console.log(`d: ${d}`);
+
+    return Math.min(lMin, shortestAcross(points, median, d), rMin);
   }
 
-  points.sort((a, b) => {
-    return a[0] - b[0];
-  });
-
-  console.log(points);
-
-  const middle = Math.floor(points.length / 2);
-  const left = points.slice(0, middle);
-  const right = points.slice(middle);
-
-  console.log(`Left: ${left}`);
-  console.log(`Right: ${right}`);
-
-  const median = points[middle - 1][0];
-  console.log(`Median: ${median}`);
-
-  const lMin = minDist(left);
-  const rMin = minDist(right);
-
-  let d = Math.min(lMin, rMin);
-  console.log(`d: ${d}`);
-
-  return Math.min(lMin, shortestAcross(points, median, d), rMin);
+  let d = Infinity;
+  return shortestRecursive(points);
 }
 
 console.log(minDist(points));
