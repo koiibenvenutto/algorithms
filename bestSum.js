@@ -1,4 +1,4 @@
-const numbers = [2, 3, 52, 7];
+const numbers = [2, 3, 5];
 
 const bestSum = (targetValue, numbers, memo = {}) => {
   if (targetValue in memo) return memo[targetValue];
@@ -9,10 +9,12 @@ const bestSum = (targetValue, numbers, memo = {}) => {
   for (let num of numbers) {
     let remainder = targetValue - num;
     let result = bestSum(remainder, numbers, memo);
-    if (shortest === null && result) {
-      shortest = [...result, num];
-    } else if (result && result.length < shortest.length) {
-      shortest = [...result, num];
+
+    if (result !== null) {
+      let combination = [...result, num];
+      if (shortest === null || combination.length < shortest.length) {
+        shortest = combination;
+      }
     }
   }
 
@@ -25,7 +27,7 @@ const bestSum = (targetValue, numbers, memo = {}) => {
   return memo[targetValue];
 };
 
-console.log(bestSum(800, numbers));
+console.log(bestSum(8, numbers));
 
 // canSum starter challenge
 // const numbers = [7, 14];
