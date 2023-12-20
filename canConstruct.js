@@ -17,19 +17,11 @@ const canConstruct = (targetStr, wordBank, memo = {}) => {
 };
 
 console.log(canConstruct(targetStr, wordBank));
-// console.log(
-//   canConstruct("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeek", [
-//     "e",
-//     "eeee",
-//     "eek",
-//   ])
-// );
+console.log(
+  canConstruct("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeek", [
+    "e",
+    "eeee",
+    "eek",
+  ])
+);
 console.log(canConstruct("kitten", ["ki", "it", "i", "en", "k", "ten", "t"]));
-
-// targetStr.slice(targetStr.length - word.length) === word
-
-// NOTE: you can't subtract strings from each other the way you would numbers.
-// console.log(targetStr.slice(0, -wordBank[0].length));
-// console.log(targetStr.slice(wordBank[0].length));
-
-// Now the goal is to return a string that
